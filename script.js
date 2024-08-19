@@ -96,19 +96,24 @@ function checkFull(){
 		localStorage.getItem(`${keyPrefix}_RANDOMIZED`) ?? "[]"
 	);
 
+    console.log(data);
+
     return data.length == totalSeats;
 }
 
 // initialization
-const numbers = createSequenceOfNumbers(1, totalSeats);
+let numbers = createSequenceOfNumbers(1, totalSeats);
+let randoming = 0;
 initializeSeats();
 randomizeBtn.addEventListener("click", async function () {
+    if(randoming == 1) return;
 
     if(checkFull()) {
         alert("Full Seats!! Please Reset!!");
         return;
     };
 
+    randoming = 1;
 	let randomNumber;
 	do {
 		randomNumber = generateRandomFromArray(numbers);
@@ -118,6 +123,7 @@ randomizeBtn.addEventListener("click", async function () {
 	randomNumberBox.innerHTML = randomNumber;
 	occupySeat(randomNumber);
 	setLocalStorage(randomNumber);
+    randoming = 0;
 });
 
 refreshSeatsEl.addEventListener("click", function () {
@@ -125,4 +131,5 @@ refreshSeatsEl.addEventListener("click", function () {
 	document.querySelectorAll(".seat").forEach((el) => {
 		el.classList.remove("seat-occupied");
 	});
+    numbers = createSequenceOfNumbers(1, totalSeats);
 });
