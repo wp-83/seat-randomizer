@@ -8,6 +8,7 @@
 :root {
     --primary: rgb(57, 184, 32);
     --light: white;
+    --light-secondary: whitesmoke;
     --light-gray: rgb(231, 231, 231);
     --gray: gray;
     --dark: #222;
@@ -101,9 +102,11 @@ button:hover{
     align-items: center;
     box-shadow: 0 0 5px rgba(0,0,0,.1);
     position: relative;
+    background: var(--light-secondary)
 }
 
 .seat .name {
+    user-select: none;
     font-size: .8rem;
     position: absolute;
     top: -80%;
