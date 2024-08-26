@@ -5,9 +5,61 @@ const leftSeatsEl = document.querySelector(".left-seats .seats");
 const rightSeatsEl = document.querySelector(".right-seats .seats");
 const userNameEl = document.querySelector("#user-name");
 
-const leftSeats = 20;
-const rightSeats = 15;
+const leftSeatsMap = [
+	"",
+	"",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+]; // 18
+
+const rightSeatsMap = [
+	"s",
+	"s",
+	"",
+	"",
+	"",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"",
+	"",
+	"",
+	"",
+	"",
+]; // 17
+
+const leftSeats = leftSeatsMap.filter((e) => e != "").length;
+const rightSeats = rightSeatsMap.filter((e) => e != "").length;
 const totalSeats = leftSeats + rightSeats; // 1 to 35
+
 const keyPrefix = "PPTI22_ARRADIUS";
 
 function createSequenceOfNumbers(start, numbers) {
@@ -22,10 +74,30 @@ function createSeats(numberOfSeats, positionEl, startAt) {
 		nameEl.innerHTML = "<p class='red'>NONE</p>";
 		nameEl.classList.add("name");
 		el.dataset.number = startAt + i;
-		el.innerHTML = startAt + i;
+		el.textContent = startAt + i;
 		el.append(nameEl);
 		positionEl.append(el);
 	}
+}
+
+function createSeatsFromMap(map, positionEl, startAt) {
+	let orderCount = 0;
+	map.forEach((e) => {
+		const el = document.createElement("div");
+
+		el.classList.add("seat-box");
+		if (e == "s") {
+			const nameEl = document.createElement("div");
+			nameEl.innerHTML = "<p class='red'>NONE</p>";
+			nameEl.classList.add("name");
+			el.classList.add("seat");
+			el.dataset.number = startAt + orderCount;
+			el.textContent = startAt + orderCount++;
+			el.append(nameEl);
+		}
+
+		positionEl.append(el);
+	});
 }
 
 function highlightOccupiedSeats() {
@@ -34,16 +106,18 @@ function highlightOccupiedSeats() {
 	);
 	Object.keys(data).forEach((number) => {
 		const seatEl = document.querySelector(`.seat[data-number='${number}']`);
-        const seatNameEl = seatEl.querySelector(".name");
-        seatNameEl.innerHTML = data[number];
+		const seatNameEl = seatEl.querySelector(".name");
+		seatNameEl.textContent = data[number];
 		seatEl?.classList.add("seat-occupied");
 		removeNumberFromArray(number);
 	});
 }
 
 function initializeSeats() {
-	createSeats(leftSeats, leftSeatsEl, 1);
-	createSeats(rightSeats, rightSeatsEl, leftSeats + 1);
+	// createSeats(leftSeats, leftSeatsEl, 1);
+	// createSeats(rightSeats, rightSeatsEl, leftSeats + 1);
+	createSeatsFromMap(leftSeatsMap, leftSeatsEl, 1);
+	createSeatsFromMap(rightSeatsMap, rightSeatsEl, leftSeats + 1);
 	highlightOccupiedSeats();
 }
 
@@ -83,7 +157,7 @@ async function shuffle() {
 				return;
 			}
 			let random = generateRandom(1, totalSeats);
-			randomNumberBox.innerHTML = random;
+			randomNumberBox.textContent = random;
 			timeElapsed += 50;
 		}, 50);
 	});
@@ -93,7 +167,7 @@ function occupySeat(number) {
 	const seat = document.querySelector(`.seat[data-number='${number}']`);
 	seat.classList.add("seat-occupied");
 	const seatName = seat.querySelector(".name");
-	seatName.innerHTML = userNameEl.value;
+	seatName.textContent = userNameEl.value;
 	removeNumberFromArray(number);
 }
 
@@ -114,9 +188,9 @@ let randoming = 0;
 initializeSeats();
 randomizeBtn.addEventListener("click", async function () {
 	if (randoming == 1) return;
-    if(userNameEl.value == null || userNameEl.value == ''){
-        return alert("Please enter your name!!");
-    }
+	if (userNameEl.value == null || userNameEl.value == "") {
+		return alert("Please enter your name!!");
+	}
 
 	if (checkFull()) {
 		alert("Full Seats!! Please Reset!!");
@@ -130,7 +204,7 @@ randomizeBtn.addEventListener("click", async function () {
 	} while (checkForExistence(randomNumber));
 
 	await shuffle();
-	randomNumberBox.innerHTML = randomNumber;
+	randomNumberBox.textContent = randomNumber;
 	occupySeat(randomNumber);
 	setLocalStorage(randomNumber);
 	userNameEl.value = null;
@@ -141,7 +215,7 @@ refreshSeatsEl.addEventListener("click", function () {
 	localStorage.removeItem(`${keyPrefix}_RANDOMIZED`);
 	document.querySelectorAll(".seat").forEach((el) => {
 		el.classList.remove("seat-occupied");
-        el.querySelector(".name").innerHTML = '';
+		el.querySelector(".name").innerHTML = "";
 	});
 	numbers = createSequenceOfNumbers(1, totalSeats);
 });
