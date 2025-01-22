@@ -9,17 +9,19 @@
 	</head>
 	<body>
 		<main>
-			<section id="random-number">20</section>
-            <input type="text" id="user-name" placeholder="Enter your name">
-			<button id="randomize">Randomize Seat</button>
-
-            <button id="refresh-seats">
-                <i class="fa-solid fa-arrows-rotate"></i> Refresh Seats
-            </button>
+			<form id="submit-form">
+				<section id="random-number">20</section>
+				<input type="text" id="user-name" placeholder="Enter your name">
+				<button id="randomize">Randomize Seat</button>
+	
+				<button id="refresh-seats">
+					<i class="fa-solid fa-arrows-rotate"></i> Refresh Seats
+				</button>
+			</form>
 
 			<section id="seats-board">
 				<div class="left-seats">
-					<h4>EMPTY</h4>
+					<h4>Left Seats</h4>
 					<div class="seats">
 						<!-- <div class="seat" data-number="1">1</div>
 						<div class="seat" data-number="2">2</div>
@@ -44,7 +46,7 @@
 					</div>
 				</div>
 				<div class="right-seats">
-					<!-- <h4>Seats</h4> -->
+					<h4>Right Seats</h4>
 					<div class="seats">
 						<!-- <div class="seat" data-number="21">21</div>
 						<div class="seat" data-number="22">22</div>

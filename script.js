@@ -1,3 +1,7 @@
+const submitForm = document.querySelector("#submit-form");
+submitForm.addEventListener("submit", (e) => e.preventDefault());
+
+
 const randomizeBtn = document.querySelector("#randomize");
 const randomNumberBox = document.querySelector("#random-number");
 const refreshSeatsEl = document.querySelector("#refresh-seats");
@@ -10,16 +14,16 @@ const leftSeatsMap = [
 	"",
 	"",
 	"",
+	"s",
+	"s",
+	"s",
 	"",
 	"",
 	"",
-	"",
-	"",
-	"",
-	"",
-	"",
-	"",
-	"",
+	"s",
+	"s",
+	"s",
+	"s",
 ]; // 18
 
 const rightSeatsMap = [
@@ -51,13 +55,13 @@ const rightSeatsMap = [
 	"s",
 	"s",
 	"s",
-	"s",
-	"s",
-	"s",
-	"s",
-	"s",
-	"s",
-	"s",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
 ]; // 17
 
 const leftSeats = leftSeatsMap.filter((e) => e != "").length;

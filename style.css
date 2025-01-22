@@ -88,7 +88,12 @@ button:hover{
 }
 
 .left-seats {
-    display: none;
+    /* display: none; */
+}
+
+.seats .seat-box:empty {
+    /* background: white; */
+    opacity: 0;
 }
 
 .left-seats h4, .right-seats h4 {
