@@ -39,7 +39,7 @@ class Ball {
     }
 }
 
-const balls = [];
+let balls = [];
 
 function getRandomNumberBetween(min, max){
     return ~~(Math.random() * (max - min) + min);

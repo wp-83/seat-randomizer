@@ -73,8 +73,13 @@ const totalSeats = leftSeats + rightSeats; // 1 to 35
 
 const keyPrefix = "PPTI22_ARRADIUS";
 
-function updateRemaining(){
-	remaining--;
+function updateRemainingSeats(){
+	remaining = 0;
+	document.querySelectorAll(".seat").forEach((el) => {
+		if(!el.classList.contains("seat-occupied")){
+			remaining++;
+		}
+	});
 	remainingSeats.textContent = remaining;
 }
 
@@ -110,7 +115,6 @@ function createSeatsFromMap(map, positionEl, startAt) {
 			el.dataset.number = startAt + orderCount;
 			el.textContent = startAt + orderCount++;
 			el.append(nameEl);
-			remaining++;
 		}
 
 		positionEl.append(el);
@@ -128,8 +132,8 @@ function highlightOccupiedSeats() {
 		seatEl?.classList.add("seat-occupied");
 		removeNumberFromArray(number);
 		addBall();
-		updateRemaining();
 	});
+	updateRemainingSeats();
 }
 
 function initializeSeats() {
@@ -138,7 +142,7 @@ function initializeSeats() {
 	createSeatsFromMap(leftSeatsMap, leftSeatsEl, 1);
 	createSeatsFromMap(rightSeatsMap, rightSeatsEl, leftSeats + 1);
 	highlightOccupiedSeats();
-	remainingSeats.textContent = remaining;
+	updateRemainingSeats();
 }
 
 function generateRandom(min, max) {
@@ -189,9 +193,8 @@ function occupySeat(number) {
 	const seatName = seat.querySelector(".name");
 	seatName.textContent = userNameEl.value;
 	removeNumberFromArray(number);
-	addBall();
-	
-	updateRemaining();
+	addBall();	
+	updateRemainingSeats();
 }
 
 function removeNumberFromArray(number) {
@@ -240,5 +243,7 @@ refreshSeatsEl.addEventListener("click", function () {
 		el.classList.remove("seat-occupied");
 		el.querySelector(".name").innerHTML = "";
 	});
+	updateRemainingSeats();
+	balls = []; // in canvas.js
 	numbers = createSequenceOfNumbers(1, totalSeats);
 });
