@@ -8,6 +8,9 @@ const refreshSeatsEl = document.querySelector("#refresh-seats");
 const leftSeatsEl = document.querySelector(".left-seats .seats");
 const rightSeatsEl = document.querySelector(".right-seats .seats");
 const userNameEl = document.querySelector("#user-name");
+const remainingSeats = document.querySelector("#nav-remaining span");
+
+let remaining = 0;
 
 const leftSeatsMap = [
 	"",
@@ -70,6 +73,11 @@ const totalSeats = leftSeats + rightSeats; // 1 to 35
 
 const keyPrefix = "PPTI22_ARRADIUS";
 
+function updateRemaining(){
+	remaining--;
+	remainingSeats.textContent = remaining;
+}
+
 function createSequenceOfNumbers(start, numbers) {
 	return new Array(numbers).fill(0).map((_, i) => i + start);
 }
@@ -102,6 +110,7 @@ function createSeatsFromMap(map, positionEl, startAt) {
 			el.dataset.number = startAt + orderCount;
 			el.textContent = startAt + orderCount++;
 			el.append(nameEl);
+			remaining++;
 		}
 
 		positionEl.append(el);
@@ -118,6 +127,8 @@ function highlightOccupiedSeats() {
 		seatNameEl.textContent = data[number];
 		seatEl?.classList.add("seat-occupied");
 		removeNumberFromArray(number);
+		addBall();
+		updateRemaining();
 	});
 }
 
@@ -127,6 +138,7 @@ function initializeSeats() {
 	createSeatsFromMap(leftSeatsMap, leftSeatsEl, 1);
 	createSeatsFromMap(rightSeatsMap, rightSeatsEl, leftSeats + 1);
 	highlightOccupiedSeats();
+	remainingSeats.textContent = remaining;
 }
 
 function generateRandom(min, max) {
@@ -177,6 +189,9 @@ function occupySeat(number) {
 	const seatName = seat.querySelector(".name");
 	seatName.textContent = userNameEl.value;
 	removeNumberFromArray(number);
+	addBall();
+	
+	updateRemaining();
 }
 
 function removeNumberFromArray(number) {
