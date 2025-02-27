@@ -126,7 +126,7 @@ button:hover{
 }
 
 .left-seats {
-    /* display: none; */
+    display: none;
 }
 
 .seats .seat-box:empty {
@@ -227,6 +227,7 @@ canvas {
 #footer {
     text-align: center;
     font-size: .9rem;
+    margin-top: 2rem;
 }
 
 @keyframes coloring {

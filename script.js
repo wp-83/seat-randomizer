@@ -17,16 +17,16 @@ const leftSeatsMap = [
 	"",
 	"",
 	"",
-	"s",
-	"s",
-	"s",
 	"",
 	"",
 	"",
-	"s",
-	"s",
-	"s",
-	"s",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
 ]; // 18
 
 const rightSeatsMap = [
@@ -58,13 +58,13 @@ const rightSeatsMap = [
 	"s",
 	"s",
 	"s",
-	"",
-	"",
-	"",
-	"",
-	"",
-	"",
-	"",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
+	"s",
 ]; // 17
 
 const leftSeats = leftSeatsMap.filter((e) => e != "").length;
@@ -125,6 +125,9 @@ function highlightOccupiedSeats() {
 	const data = JSON.parse(
 		localStorage.getItem(`${keyPrefix}_RANDOMIZED`) ?? "{}"
 	);
+	// start - for carantine purpose
+	data[35] = "William Fernando Sukemi";
+	// end
 	Object.keys(data).forEach((number) => {
 		const seatEl = document.querySelector(`.seat[data-number='${number}']`);
 		const seatNameEl = seatEl.querySelector(".name");
@@ -247,4 +250,8 @@ refreshSeatsEl.addEventListener("click", function () {
 	updateRemainingSeats();
 	balls = []; // in canvas.js
 	numbers = createSequenceOfNumbers(1, totalSeats);
+
+	// start - for carantine purpose
+	highlightOccupiedSeats();
+	// end
 });
