@@ -241,7 +241,8 @@ refreshSeatsEl.addEventListener("click", function () {
 	localStorage.removeItem(`${keyPrefix}_RANDOMIZED`);
 	document.querySelectorAll(".seat").forEach((el) => {
 		el.classList.remove("seat-occupied");
-		el.querySelector(".name").innerHTML = "";
+		const nameEL = el.querySelector(".name");
+		nameEL.innerHTML = "<p class='red'>NONE</p>";
 	});
 	updateRemainingSeats();
 	balls = []; // in canvas.js
