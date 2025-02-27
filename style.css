@@ -224,6 +224,11 @@ canvas {
     z-index: -2;
 }
 
+#footer {
+    text-align: center;
+    font-size: .9rem;
+}
+
 @keyframes coloring {
     0%{
         background: transparent;
