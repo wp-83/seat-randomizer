@@ -130,7 +130,7 @@ button:hover{
 }
 
 .left-seats {
-    display: none;
+    /* display: none; */
 }
 
 .seats .seat-box:empty {
