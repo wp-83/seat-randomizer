@@ -125,8 +125,6 @@ function highlightOccupiedSeats() {
 	const data = JSON.parse(
 		localStorage.getItem(`${keyPrefix}_RANDOMIZED`) ?? "{}"
 	);
-	// start - for carantine purpose
-	data[35] = "William Fernando Sukemi";
 	// end
 	Object.keys(data).forEach((number) => {
 		const seatEl = document.querySelector(`.seat[data-number='${number}']`);
