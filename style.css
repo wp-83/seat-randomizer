@@ -9,7 +9,7 @@
     --primary: rgb(57, 184, 32);
     --light: white;
     --light-secondary: whitesmoke;
-    --light-gray: rgb(231, 231, 231);
+    --light-gray: rgb(219, 219, 219);
     --gray: gray;
     --dark: #222;
     --dark-gray: rgb(61, 61, 61);
@@ -19,6 +19,53 @@
 body, html {
     font-size: 14.4px;
     overflow-x: hidden;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 2rem;
+}
+
+input, select {
+   padding: 0.5rem;
+   border-radius: 0.3125rem; /* 5px -> 0.3125rem */
+   outline: none;
+   border: 1px solid var(--gray); 
+   max-width: 12.5rem; /* 200px -> 12.5rem */
+   width: 100%;
+}
+
+button {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem; /* 8px -> 0.5rem */
+    border: none;
+    font-size: 0.85rem;
+    background: var(--primary);
+    color: var(--light);
+    margin: auto;
+    display: block;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover{
+    opacity: .8;
+}
+
+hr {
+    border-color: var(--light);
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: -2;
 }
 
 .main-bg {
@@ -57,60 +104,10 @@ body, html {
     color: red;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100dvh;
-    padding: 2rem;
-}
-
-input {
-   padding: 0.5rem;
-   border-radius: 0.3125rem; /* 5px -> 0.3125rem */
-   outline: none;
-   border: 1px solid var(--gray); 
-   max-width: 12.5rem; /* 200px -> 12.5rem */
-   width: 100%;
-}
-
 #user-name {
     margin: auto;
     display: block;
     margin-bottom: 1rem;
-}
-
-#random-number {
-    width: 9.375rem; /* 150px -> 9.375rem */
-    height: 9.375rem; /* 150px -> 9.375rem */
-    padding: 1rem;
-    border-radius: 0.625rem; /* 10px -> 0.625rem */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 4rem;
-    box-shadow: 0 0 1.25rem rgba(0,0,0,.1); /* 20px -> 1.25rem */
-    margin: auto;
-    margin-bottom: 1rem;
-    font-weight: bold;
-    background: var(--light);
-}
-
-button {
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem; /* 8px -> 0.5rem */
-    border: none;
-    font-size: 0.85rem;
-    background: var(--primary);
-    color: var(--light);
-    margin: auto;
-    display: block;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover{
-    opacity: .8;
 }
 
 #seats-board {
@@ -144,7 +141,7 @@ button:hover{
     color: var(--dark-gray);
 }
 
-.seat-box, .seat {
+.seat {
     border-radius: 0.3125rem; /* 5px -> 0.3125rem */
     width: 2.5rem; /* 40px -> 2.5rem */
     height: 2.5rem; /* 40px -> 2.5rem */
@@ -154,6 +151,51 @@ button:hover{
     box-shadow: 0 0 0.3125rem rgba(0,0,0,.1); /* 5px -> 0.3125rem */
     position: relative;
     background: var(--light)
+}
+
+body.seat-type-square .seat {
+    border-radius: 0.3125rem; /* 5px -> 0.3125rem */
+}
+
+body.seat-type-circle .seat {
+    border-radius: 10000px;
+}
+
+body.seat-type-polygon .seat {
+    width: 2.85rem;
+    border-radius: 0;
+    position: relative;
+    z-index: 1;
+    background: transparent;
+    box-shadow: none;
+}
+
+body.seat-type-polygon .seat::after{
+    content: '';
+    z-index: -1;
+    position: absolute;
+    background: var(--light);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    clip-path: polygon(0 50%, 25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+}
+
+body.seat-type-polygon .seat::before {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    box-shadow: 0 0 1rem rgba(0,0,0,.5);
+}
+
+body.seat-type-polygon #seats-board .seats {
+    gap: .75rem;
 }
 
 .seat .name {
@@ -219,15 +261,6 @@ button:hover{
     width: 100%;
 }
 
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100dvh;
-    z-index: -2;
-}
-
 #footer {
     text-align: center;
     font-size: 0.9rem;
@@ -242,3 +275,210 @@ canvas {
         background: var(--primary);
     }
 }
+
+/* random number type start */
+.random-number {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#random-number-dice {
+    width: 9.375rem; /* 150px -> 9.375rem */
+    height: 9.375rem;
+    padding: 1rem;
+    border-radius: 0.625rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    box-shadow: 0 0 1.25rem rgba(0,0,0,.1);
+    font-weight: bold;
+    background: var(--light);
+}
+
+#random-number-casino {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: var(--light-gray);
+    position: relative;
+    padding: .5rem 2rem .5rem .5rem;  
+    z-index: 10;
+    border: 1px solid var(--gray);
+}
+
+#random-number-casino .random-number-casino-rolls {
+    display: flex;
+    gap: .5rem;
+    transform-style: preserve-3d;
+    box-shadow: 0 0 1.25rem rgba(0,0,0,.1);
+    justify-content: center;
+    align-items: center;
+    height: 9.375rem;
+    overflow: hidden;
+    /* transform: rotateY(5deg); */
+}
+
+#random-number-casino .casino-number-roll {
+    transform-style: preserve-3d;
+    position: relative;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 0.625rem;
+    transform: rotateX(0deg);
+}
+
+#random-number-casino .casino-number-roll .casino-number-face {
+    background: var(--light);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    font-weight: bold;
+    transform: rotateX(calc(var(--order) * (360deg / 10))) translateZ(10.75rem);
+    border: 1px solid var(--gray);
+}
+
+#random-number-casino .casino-number-roll .casino-number-face:nth-child(even){
+    background: var(--light-secondary);
+}
+
+#random-number-casino .random-number-casino-pull {
+    transition: 1s;
+    position: absolute;
+    top: 0;
+    right: 0;
+    translate: 150%;
+    height: 100%;
+    z-index: -2;
+}
+
+#random-number-casino.lottering .random-number-casino-pull {
+    transform: rotateX(180deg);
+}
+
+#random-number-casino .random-number-casino-pull::before{
+    content: '';
+    position: absolute;
+    background: red;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 10px;
+    background: var(--gray);
+    top: 50%;
+    translate: -100% -50%;
+    z-index: -1;
+    border-radius: 1000px;
+}
+
+#random-number-casino .random-number-casino-pull::after{
+    content: '';
+    position: absolute;
+    background: red;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: calc(50% + 3px);
+    transform-origin: bottom center;
+    background: var(--gray);
+    translate: -100%;
+    rotate: 25deg;
+    z-index: -1;
+    border-radius: 1000px;
+}
+
+#random-number-casino .random-number-casino-pull button {
+    border-radius: 1000px;
+    background: var(--primary);
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+}
+
+#random-number-casino .random-number-casino-pull button:hover {
+    opacity: 1;
+}
+
+/* 
+@keyframes rotating {
+    0%{
+        transform: rotateX(0deg);
+    }
+    100%{
+        transform: rotateX(360deg);
+    }
+} */
+
+/* random number type end */
+
+/* sidebar controls start */
+#sidebar-controls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20rem;
+    height: 100vh;
+    background: var(--light);
+    box-shadow: 5px 0 10px rgba(0,0,0,.05);
+    z-index: 100;
+    translate: -100%;
+    transition: .5s;
+    border-right: 1px solid var(--light-gray);
+}
+
+#sidebar-controls.open {
+    translate: 0;
+}
+
+.sidebar-controls-content {
+    padding: 1rem;
+}
+
+.sidebar-controls-selection {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.sidebar-controls-selection + .sidebar-controls-selection {
+    margin-top: 1rem;
+}
+
+.sidebar-controls-selection select {
+    max-width: initial;
+}
+
+.sidebar-controls-selection label {
+    font-size: .95rem;
+}
+
+.sidebar-controls-toggler {
+    padding: 1rem;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    translate: 100% -50%;
+    min-height: 10rem;
+    border-radius: 0 10px 10px 0;
+    background: var(--light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--light-gray);
+    border-left: none;
+    cursor: pointer;
+    color: var(--dark-gray);
+}
+
+#sidebar-controls.open i {
+    rotate: 180deg;
+}
+
+
+/* sidebar controls end */

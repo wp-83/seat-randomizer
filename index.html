@@ -17,11 +17,79 @@
 			</button>
 			<p id="nav-remaining"> Remaining <span>0</span> Seats</p>
 		</div>
+
+		<section id="sidebar-controls">
+
+			<div class="sidebar-controls-toggler">
+				<i class="fas fa-chevron-right"></i>
+			</div>
+
+			<div class="sidebar-controls-content">
+				<h3>Arradius Seat Randomizer</h3>
+				<p>Kustomisasi cara random kita Arradians!</p>
+			</div>
+
+			<hr>
+
+			<div class="sidebar-controls-content">
+				<div class="sidebar-controls-selection">
+					<label for="seat-type">Seat Type</label>
+					<select name="seat-type" id="seat-type" class="sidebar-select">
+						<option value="square">Square</option>
+						<option value="circle">Circle</option>
+						<option value="polygon">Polygon</option>
+					</select>
+				</div>
+				<div class="sidebar-controls-selection">
+					<label for="seat-randomer">Seat Randomer</label>
+					<select name="seat-randomer" id="seat-randomer" class="sidebar-select">
+						<option value="dice">Dice</option>
+						<option value="casino">Casino</option>
+						<!-- <option value="roulette">Roulette</option> -->
+					</select>
+				</div>
+			</div>
+		</section>
+
 		<main>
 			<form id="submit-form">
-				<section id="random-number">20</section>
+				<div class="random-number">
+					<section id="random-number-dice">20</section>
+					<section id="random-number-casino">
+						<div class="random-number-casino-rolls">
+							<div class="casino-number-roll">
+								<div class="casino-number-face" style="--order: 0">0</div>
+								<div class="casino-number-face" style="--order: 1">1</div>
+								<div class="casino-number-face" style="--order: 2">2</div>
+								<div class="casino-number-face" style="--order: 3">3</div>
+								<div class="casino-number-face" style="--order: 4">4</div>
+								<div class="casino-number-face" style="--order: 5">5</div>
+								<div class="casino-number-face" style="--order: 6">6</div>
+								<div class="casino-number-face" style="--order: 7">7</div>
+								<div class="casino-number-face" style="--order: 8">8</div>
+								<div class="casino-number-face" style="--order: 9">9</div>
+							</div>
+							<div class="casino-number-roll">
+								<div class="casino-number-face" style="--order: 0">0</div>
+								<div class="casino-number-face" style="--order: 1">1</div>
+								<div class="casino-number-face" style="--order: 2">2</div>
+								<div class="casino-number-face" style="--order: 3">3</div>
+								<div class="casino-number-face" style="--order: 4">4</div>
+								<div class="casino-number-face" style="--order: 5">5</div>
+								<div class="casino-number-face" style="--order: 6">6</div>
+								<div class="casino-number-face" style="--order: 7">7</div>
+								<div class="casino-number-face" style="--order: 8">8</div>
+								<div class="casino-number-face" style="--order: 9">9</div>
+							</div>
+						</div>
+						<div class="random-number-casino-pull">
+							<button id="randomize" class="random-number-casino-pull-btn"><i class="fa-solid fa-hand"></i></button>
+						</div>
+					</section>
+					<section id="random-number-roulette">roulette</section>
+				</div>
 				<input type="text" id="user-name" placeholder="Enter your name">
-				<button id="randomize">Randomize Seat</button>
+				<button id="randomize" class="universal-randomize-btn">Randomize Seat</button>
 			</form>
 
 			<section id="seats-board">

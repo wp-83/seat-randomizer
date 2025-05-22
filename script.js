@@ -1,14 +1,17 @@
 const submitForm = document.querySelector("#submit-form");
 submitForm.addEventListener("submit", (e) => e.preventDefault());
 
-
 const randomizeBtn = document.querySelector("#randomize");
-const randomNumberBox = document.querySelector("#random-number");
 const refreshSeatsEl = document.querySelector("#refresh-seats");
 const leftSeatsEl = document.querySelector(".left-seats .seats");
 const rightSeatsEl = document.querySelector(".right-seats .seats");
 const userNameEl = document.querySelector("#user-name");
 const remainingSeats = document.querySelector("#nav-remaining span");
+
+// random number type
+const randomNumberDice = document.querySelector("#random-number-dice");
+const randomNumberCasino = document.querySelector("#random-number-casino");
+const randomNumberCasinoBtn = randomNumberCasino.querySelector(".random-number-casino-pull #randomize");
 
 let remaining = 0;
 
@@ -72,6 +75,11 @@ const rightSeats = rightSeatsMap.filter((e) => e != "").length;
 const totalSeats = leftSeats + rightSeats; // 1 to 35
 
 const keyPrefix = "PPTI22_ARRADIUS";
+
+let config = {
+	"seat-type" : "square",
+	"seat-randomer" : "casino"
+}
 
 function updateRemainingSeats(){
 	remaining = 0;
@@ -154,7 +162,7 @@ function generateRandomFromArray(array) {
 	return array[~~(Math.random() * array.length)];
 }
 
-function setLocalStorage(item) {
+function setSeatToLocalStorage(item) {
 	const data = JSON.parse(
 		localStorage.getItem(`${keyPrefix}_RANDOMIZED`) ?? "{}"
 	);
@@ -182,11 +190,59 @@ async function shuffle() {
 				return;
 			}
 			let random = generateRandom(1, totalSeats);
-			randomNumberBox.textContent = random;
+			randomNumberDice.textContent = random;
 			timeElapsed += 50;
 		}, 50);
 	});
 }
+
+async function rollUp(seatNumber){
+	const firstRollEl = document.querySelector('.casino-number-roll:first-child');
+	const secondRollEl = document.querySelector('.casino-number-roll:last-child');
+
+	const stringNumber = seatNumber.toString().padStart(2, '0');
+	const firstNumber = Number(stringNumber[0]);
+	const secondNumber = Number(stringNumber[1]);
+
+	let totalFirstRotation = generateRandom(3, 8) * 360;
+	let totalSecondRotation = generateRandom(3, 8) * 360;
+	
+	const additionalFirstRotation = firstNumber * (360 / 10);
+	const additionalSecondRotation = secondNumber * (360 / 10);
+	console.log(firstNumber, additionalFirstRotation, secondNumber, additionalSecondRotation);
+	
+	totalFirstRotation += additionalFirstRotation;
+	totalSecondRotation += additionalSecondRotation;
+
+	const firstTime = generateRandom(3000, 5000);
+	const secondTime = firstTime + generateRandom(500, 1500);
+
+	const firstAnimation = firstRollEl.animate(
+		[
+			{ transform: 'rotateX(0deg)' },
+			{ transform: `rotateX(${-totalFirstRotation}deg)` }
+		],
+		{
+			easing: 'cubic-bezier(0.1, 0.7, 0.1, 1)',
+			duration: firstTime,
+			fill: 'forwards'
+		}
+	);
+
+	const secondAnimation = secondRollEl.animate(
+		[
+			{ transform: 'rotateX(0deg)' },
+			{ transform: `rotateX(${-totalSecondRotation}deg)` }
+		],
+		{
+			easing: 'cubic-bezier(0.1, 0.7, 0.1, 1)',
+			duration: secondTime,
+			fill: 'forwards'
+		}
+	);
+
+	await Promise.all([firstAnimation.finished, secondAnimation.finished]);
+} 
 
 function occupySeat(number) {
 	const seat = document.querySelector(`.seat[data-number='${number}']`);
@@ -219,6 +275,10 @@ randomizeBtn.addEventListener("click", async function () {
 		return alert("Please enter your name!!");
 	}
 
+	if(randomizeBtn.classList.contains("random-number-casino-pull-btn")){
+		randomNumberCasino.classList.add("lottering");
+	}
+
 	if (checkFull()) {
 		alert("Full Seats!! Please Reset!!");
 		return;
@@ -230,12 +290,20 @@ randomizeBtn.addEventListener("click", async function () {
 		randomNumber = generateRandomFromArray(numbers);
 	} while (checkForExistence(randomNumber));
 
-	await shuffle();
-	randomNumberBox.textContent = randomNumber;
+	if(config['seat-randomer'] == 'dice'){
+		await shuffle();
+		randomNumberDice.textContent = randomNumber;
+	}else if(config['seat-randomer'] == 'casino'){
+		await rollUp(randomNumber);
+	}
+	
 	occupySeat(randomNumber);
-	setLocalStorage(randomNumber);
+	setSeatToLocalStorage(randomNumber);
 	userNameEl.value = null;
 	randoming = 0;
+	if(randomizeBtn.classList.contains("random-number-casino-pull-btn")){
+		randomNumberCasino.classList.remove("lottering");
+	}
 });
 
 refreshSeatsEl.addEventListener("click", function () {
@@ -252,4 +320,73 @@ refreshSeatsEl.addEventListener("click", function () {
 	// start - for carantine purpose
 	highlightOccupiedSeats();
 	// end
+});
+
+
+
+// sidebar controls and configuration types
+const sidebarToggler = document.querySelector("#sidebar-controls .sidebar-controls-toggler");
+const sidebarControls = document.querySelector("#sidebar-controls");
+const seatTypeSelect = document.querySelector("#seat-type");
+const seatRandomerSelect = document.querySelector("#seat-randomer");
+const validSeatType = ['square', 'circle', 'polygon'];
+const validRandomerType = ['dice', 'casino', 'roulette'];
+
+function switchRandomizeBtn(){
+	// randomize button
+	if(config['seat-randomer'] == 'casino'){
+		document.querySelector(".universal-randomize-btn").style.display = 'none';
+	}else {	
+		document.querySelector(".universal-randomize-btn").style.display = 'block';
+	}
+}
+
+function initializeConfig(){
+	const data = JSON.parse(
+		localStorage.getItem(`${keyPrefix}_CONFIG`) ?? "{}"
+	);
+	
+	// seat type
+	validSeatType.forEach(c => document.body.classList.remove(c));
+	document.body.classList.add(`seat-type-${data["seat-type"] ?? 'square'}`);
+	document.querySelector(`option[value="${data["seat-type"] ?? 'square'}"]`).selected = true;
+
+	// randomer
+	validRandomerType.forEach(c => document.querySelector(`#random-number-${c}`).style.display = 'none');
+	document.querySelector(`#random-number-${data["seat-randomer"] ?? 'dice'}`).style.display = 'flex';
+	document.querySelector(`option[value="${data["seat-randomer"] ?? 'dice'}"]`).selected = true;
+
+	config = data;
+	switchRandomizeBtn();
+}
+
+function setConfigToLocalStorage(){
+	localStorage.setItem(`${keyPrefix}_CONFIG`, JSON.stringify(config));
+}
+
+initializeConfig();
+
+sidebarToggler.addEventListener('click', function(){
+	sidebarControls.classList.toggle("open");
+});
+
+window.addEventListener('click', function(e){
+	const parent = e.target.closest('#sidebar-controls');
+	if(!parent) sidebarControls.classList.remove('open');
+});
+
+seatTypeSelect.addEventListener('change', function(){
+	validSeatType.forEach(c => document.body.classList.remove(`seat-type-${c}`));
+	document.body.classList.add(`seat-type-${seatTypeSelect.value}`);
+	config['seat-type'] = seatTypeSelect.value;
+	setConfigToLocalStorage();
+});
+
+seatRandomerSelect.addEventListener('change', function(){
+	validRandomerType.forEach(c => document.querySelector(`#random-number-${c}`).style.display = 'none');
+
+	document.querySelector(`#random-number-${seatRandomerSelect.value}`).style.display = 'flex';
+	config['seat-randomer'] = seatRandomerSelect.value;
+	setConfigToLocalStorage();
+	switchRandomizeBtn();
 });
