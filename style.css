@@ -170,6 +170,10 @@ body.seat-type-polygon .seat {
     box-shadow: none;
 }
 
+body.seat-type-polygon .seat.seat-occupied {
+    animation: none;
+}
+
 body.seat-type-polygon .seat::after{
     content: '';
     z-index: -1;
@@ -180,6 +184,10 @@ body.seat-type-polygon .seat::after{
     top: 0;
     left: 0;
     clip-path: polygon(0 50%, 25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+}
+
+body.seat-type-polygon .seat.seat-occupied:after{
+    animation: coloring .5s forwards;
 }
 
 body.seat-type-polygon .seat::before {
