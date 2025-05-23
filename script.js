@@ -1,7 +1,7 @@
 const submitForm = document.querySelector("#submit-form");
 submitForm.addEventListener("submit", (e) => e.preventDefault());
 
-const randomizeBtn = document.querySelector("#randomize");
+const randomizeBtns = document.querySelectorAll(".randomize-btn");
 const refreshSeatsEl = document.querySelector("#refresh-seats");
 const leftSeatsEl = document.querySelector(".left-seats .seats");
 const rightSeatsEl = document.querySelector(".right-seats .seats");
@@ -11,7 +11,7 @@ const remainingSeats = document.querySelector("#nav-remaining span");
 // random number type
 const randomNumberDice = document.querySelector("#random-number-dice");
 const randomNumberCasino = document.querySelector("#random-number-casino");
-const randomNumberCasinoBtn = randomNumberCasino.querySelector(".random-number-casino-pull #randomize");
+const randomNumberCasinoBtn = randomNumberCasino.querySelector(".random-number-casino-pull .randomize-btn");
 
 let remaining = 0;
 
@@ -209,7 +209,6 @@ async function rollUp(seatNumber){
 	
 	const additionalFirstRotation = firstNumber * (360 / 10);
 	const additionalSecondRotation = secondNumber * (360 / 10);
-	console.log(firstNumber, additionalFirstRotation, secondNumber, additionalSecondRotation);
 	
 	totalFirstRotation += additionalFirstRotation;
 	totalSecondRotation += additionalSecondRotation;
@@ -269,7 +268,7 @@ function checkFull() {
 let numbers = createSequenceOfNumbers(1, totalSeats);
 let randoming = 0;
 initializeSeats();
-randomizeBtn.addEventListener("click", async function () {
+randomizeBtns.forEach(randomizeBtn => randomizeBtn.addEventListener("click", async function () {
 	if (randoming == 1) return;
 	if (userNameEl.value == null || userNameEl.value == "") {
 		return alert("Please enter your name!!");
@@ -304,7 +303,7 @@ randomizeBtn.addEventListener("click", async function () {
 	if(randomizeBtn.classList.contains("random-number-casino-pull-btn")){
 		randomNumberCasino.classList.remove("lottering");
 	}
-});
+}));
 
 refreshSeatsEl.addEventListener("click", function () {
 	localStorage.removeItem(`${keyPrefix}_RANDOMIZED`);
